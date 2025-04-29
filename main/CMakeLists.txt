@@ -1,1 +1,1 @@
-idf_component_register(SRCS "main.c" INCLUDE_DIRS "." REQUIRES driver bme68x)
+idf_component_register(SRCS "main.c" "main1.c" INCLUDE_DIRS "." REQUIRES driver bme68x)
