@@ -1,12 +1,12 @@
 # BME680 XIAO ESP32C6
 
-This repository contains code and documentation for interfacing the BME680 environmental sensor with the Seeed Studio XIAO ESP32C6 microcontroller. The project demonstrates how to read temperature, humidity, pressure, and gas resistance data using the I2C protocol.
+This repository contains code and documentation for interfacing the BME680 environmental sensor with the Seeed Studio XIAO ESP32C6 microcontroller using the ESP-IDF framework. The project demonstrates how to read temperature, humidity, pressure, and gas resistance data via the I2C protocol.
 
 ## Features
 - Reads environmental data (temperature, humidity, pressure, gas resistance) from the BME680 sensor.
 - Utilizes the Seeed Studio XIAO ESP32C6 for compact and efficient processing.
-- Implements I2C communication for sensor interfacing.
-- Example code for easy integration into IoT or environmental monitoring projects.
+- Implements I2C communication using ESP-IDF drivers.
+- Example code for integration into IoT or environmental monitoring projects.
 
 ## Hardware Requirements
 - Seeed Studio XIAO ESP32C6
@@ -15,45 +15,54 @@ This repository contains code and documentation for interfacing the BME680 envir
 - (Optional) Breadboard for prototyping
 
 ## Software Requirements
-- Arduino IDE or PlatformIO
-- [Adafruit BME680 Library](https://github.com/adafruit/Adafruit_BME680)
-- [Wire Library](https://www.arduino.cc/en/Reference/Wire) (included with Arduino IDE)
-- ESP32 Core for Arduino (install via Boards Manager)
+- [ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/latest/esp32c6/get-started/index.html) (v5.0 or later)
+- [Visual Studio Code](https://code.visualstudio.com/) with the [ESP-IDF Extension](https://marketplace.visualstudio.com/items?itemName=espressif.esp-idf-extension)
+- [Bosch BME68x Library](https://github.com/boschsensortec/Bosch-BME68x-Library.git)
 
 ## Installation
 1. **Clone the Repository**:
    ```bash
    git clone https://github.com/Dasovon/bme680_xiao_esp32c6.git
    ```
-2. **Install Dependencies**:
-   - Open Arduino IDE or PlatformIO.
-   - Install the Adafruit BME680 library via the Library Manager.
-   - Ensure the ESP32 Core is installed (see [Seeed Studio's guide](https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/)).
-3. **Connect Hardware**:
+2. **Set Up ESP-IDF**:
+   - Follow the [ESP-IDF Getting Started Guide](https://docs.espressif.com/projects/esp-idf/en/latest/esp32c6/get-started/index.html) to install ESP-IDF and configure the environment.
+   - Ensure the ESP-IDF extension is installed in VS Code.
+3. **Install Bosch BME68x Library**:
+   - Clone the Bosch BME68x Library into the `components` folder:
+     ```bash
+     cd bme680_xiao_esp32c6/components
+     git clone https://github.com/boschsensortec/Bosch-BME68x-Library.git
+     ```
+4. **Connect Hardware**:
    - Connect the BME680 to the XIAO ESP32C6 via I2C:
-     - SDA (BME680) → Pin D4 (XIAO ESP32C6)
-     - SCL (BME680) → Pin D5 (XIAO ESP32C6)
+     - SDA (BME680) → Pin 22 (XIAO ESP32C6)
+     - SCL (BME680) → Pin 23 (XIAO ESP32C6)
      - VCC (BME680) → 3.3V (XIAO ESP32C6)
      - GND (BME680) → GND (XIAO ESP32C6)
-4. **Upload Code**:
-   - Open the `bme680_xiao.ino` sketch in the `src` folder.
-   - Select the XIAO ESP32C6 board in the Arduino IDE.
-   - Upload the code to the microcontroller.
+5. **Build and Flash**:
+   - Open the project in VS Code.
+   - Use the ESP-IDF extension to set the target to `esp32c6` (`idf.py set-target esp32c6`).
+   - Build the project (`idf.py build`).
+   - Flash the code to the XIAO ESP32C6 (`idf.py -p PORT flash`).
+   - Monitor output (`idf.py monitor`).
 
 ## Usage
-- After uploading the code, open the Serial Monitor (baud rate: 115200) to view sensor readings.
-- The sketch will output temperature (°C), humidity (%), pressure (hPa), and gas resistance (KOhms) at regular intervals.
-- Modify the code in `src/bme680_xiao.ino` to adjust the sampling rate or add custom functionality.
+- After flashing, use the ESP-IDF monitor (baud rate: 115200) to view sensor readings.
+- The code outputs temperature (°C), humidity (%), pressure (hPa), and gas resistance (KOhms) at regular intervals.
+- Modify the code in `main/main.c` to adjust the sampling rate or add custom functionality.
 
 ## Folder Structure
 ```
 bme680_xiao_esp32c6/
-├── src/
-│   └── bme680_xiao.ino    # Main Arduino sketch
-├── docs/
-│   └── wiring_diagram.png # Wiring diagram for BME680 and XIAO ESP32C6
-├── LICENSE                # License file
-└── README.md              # This file
+├── components/
+│   └── bme68x/ # From the Bosch BME68x Library
+├── main/
+│   ├── main.c                # Main application code
+│   └── CMakeLists.txt        # Main component build configuration
+├── CMakeLists.txt            # Project build configuration
+├── sdkconfig                 # ESP-IDF configuration
+├── LICENSE                   # License file
+└── README.md                 # This file
 ```
 
 ## Contributing
@@ -68,5 +77,6 @@ Contributions are welcome! Please follow these steps:
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
-- [Adafruit](https://www.adafruit.com/) for the BME680 library.
+- [Bosch Sensortec](https://github.com/boschsensortec) for the BME68x Library.
 - [Seeed Studio](https://www.seeedstudio.com/) for the XIAO ESP32C6 documentation.
+- [Espressif Systems](https://www.espressif.com/) for the ESP-IDF framework.
